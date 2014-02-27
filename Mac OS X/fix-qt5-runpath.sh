@@ -31,7 +31,7 @@ do
 		echo 'QMAKE_CXXFLAGS += -mmacosx-version-min=10.6' >> $PROJECT_FILE
 
 		# This line makes the right id of the library.
-		# For example, QtCore will have an id '@rpath/QtCore.framework/Versions/4/QtCore'.
+		# For example, QtCore will have an id '@rpath/QtCore.framework/Versions/5/QtCore'.
 		echo 'QMAKE_LFLAGS_SONAME = $$quote(-install_name	@rpath/)' >> $PROJECT_FILE
 		echo '}' >> $PROJECT_FILE
 	fi
@@ -72,7 +72,7 @@ do
 		echo 'QMAKE_CXXFLAGS += -mmacosx-version-min=10.6' >> $PROJECT_FILE
 
 		# This line makes the right id of the library.
-		# For example, QtCore will have an id '@rpath/QtCore.framework/Versions/4/QtCore'.
+		# For example, QtCore will have an id '@rpath/QtCore.framework/Versions/5/QtCore'.
 		echo 'QMAKE_LFLAGS_SONAME = $$quote(-install_name	@rpath/)' >> $PROJECT_FILE
 		echo '}' >> $PROJECT_FILE
 	fi
@@ -113,8 +113,10 @@ done
 
 # and at the end fix RPATH for the plugins
 # they should have two runpaths:
-#    1) for installed Qt
-#    2) for deployed Qt
+#    1) for installed Qt;
+#    2) for deployed Qt; I don't know how Qt will be deployed so
+#      the step is passed. One can later add/change runpaths
+#      with install_name_tool.
 find . -name \*\.pro | while read PROJECT_FILE;
 do
 	grep -E --silent 'load\(qt_plugin' $PROJECT_FILE
